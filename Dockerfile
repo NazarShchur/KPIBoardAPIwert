@@ -17,7 +17,7 @@ RUN mvn package -DskipTests
 FROM adoptopenjdk/openjdk11:alpine-slim
 
 # Copy the jar to the production image from the builder stage.
-COPY --from=builder /app/target/KPIBoardAPI-*.jar /KPIBoardAPI.jar
+COPY --from=builder /app/target/kpiboardapi-*.jar /kpiboardapi.jar
 
 # Run the web service on container startup.
-CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/KPIBoardAPI.jar"]
+CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/kpiboardapi.jar"]
