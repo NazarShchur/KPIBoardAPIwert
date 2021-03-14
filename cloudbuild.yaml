@@ -16,6 +16,7 @@ steps:
       - 'push'
       - 'gcr.io/$PROJECT_ID/kpiboardapi:$SHORT_SHA'
 
-  - name: "gcr.io/cloud-builders/gcloud"
-    args: [ "app", "deploy" ]
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [ 'run', 'deploy', 'kpiboardapi', '--image', 'gcr.io/PROJECT_ID/kpiboardapi', '--region', '12', '--platform', 'managed' ]
 
