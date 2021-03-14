@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ua.kpi.tef</groupId>
-	<artifactId>KPIBoardAPI</artifactId>
+	<artifactId>kpiboardapi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>kpiboardapi</name>
 	<description>Demo project for Spring Boot</description>
