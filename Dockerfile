@@ -1,23 +1,18 @@
-# Use the official maven/Java 8 image to create a build artifact.
-# https://hub.docker.com/_/maven
-FROM maven:3.6-jdk-11 as builder
+FROM maven:3.6.3-openjdk-11-slim as builder
 
-# Copy local code to the container image.
 WORKDIR /app
 COPY pom.xml .
-COPY src ./src
+# Use this optimization to cache the local dependencies. Works as long as the POM doesn't change
+RUN mvn dependency:go-offline
 
-# Build a release artifact.
-RUN mvn package -DskipTests
+COPY src/ /app/src/
+RUN mvn package
 
 # Use AdoptOpenJDK for base image.
-# It's important to use OpenJDK 8u191 or above that has container support enabled.
-# https://hub.docker.com/r/adoptopenjdk/openjdk8
-# https://docs.docker.com/develop/develop-images/multistage-build/#use-multi-stage-builds
-FROM adoptopenjdk/openjdk11:alpine-slim
+FROM adoptopenjdk/openjdk11:jre-11.0.8_10-alpine
 
 # Copy the jar to the production image from the builder stage.
-COPY --from=builder /app/target/kpiboardapi-*.jar /kpiboardapi.jar
+COPY --from=builder /app/target/*.jar /KPIBoardAPI.jar
 
 # Run the web service on container startup.
-CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/kpiboardapi.jar"]
+CMD ["java", "-jar", "/KPIBoardAPI.jar"]
